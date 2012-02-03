@@ -25,6 +25,7 @@ class PiwikTracker {
     def visitorId
     def hasCookies = false
     def requestCookie
+    def cookieSupport = false
     def visitorCustomVar = []
     def forcedDatetime
     def tokenAuth
@@ -37,14 +38,48 @@ class PiwikTracker {
         }
 
         site = idSite
+        url = apiUrl
+        visitorId = getHash(UUID.randomUUID().toString()).substring(0, 16);
+        
+        logger.info("Using ${url} to post track data.")
+
+        if(req) {
+            request = req
+            referer = request.getHeader("Referer")
+            pageUrl = request.getRequestURL().toString();
+            ip = request.getRemoteAddr();
+            language = request.getLocale().getLanguage();
+            userAgent = request.getHeader("user-agent");
+
+            if(request.getCookies()) {
+                def cookies = request.getCookies();
+                for (int i = 0; i < cookies.length; i++) {
+                    def c = cookies[i];
+                    if(c.getName().equals("piwik_visitor")) {
+
+                        if(logger.isDebugEnabled()) {
+                            logger.debug("Found tracking cookie ${c}");
+                        }
+
+                        hasCookies = true;
+                        requestCookie = c;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * This method must be called before send data
+     * @param req
+     */
+    def setRequest(req) {
         request = req
         referer = request.getHeader("Referer")
         pageUrl = request.getRequestURL().toString();
         ip = request.getRemoteAddr();
         language = request.getLocale().getLanguage();
         userAgent = request.getHeader("user-agent");
-        url = apiUrl
-        visitorId = getHash(UUID.randomUUID().toString()).substring(0, 16);
 
         if(request.getCookies()) {
             def cookies = request.getCookies();
@@ -81,22 +116,14 @@ class PiwikTracker {
      * @throws Exception
      */
     def getUrlTrackPageView(documentTitle) throws Exception {
-        url = getStringRequest( site );
+        def url = getStringRequest( site );
         if(!documentTitle) {
             url += "&action_name=" + urlencode(documentTitle);
         }
-        url;
+        url
     }
 
     protected String getStringRequest( int idSite ) throws Exception {
-        if(url) {
-            throw new Exception("You must first set the Piwik Tracker URL");
-        }
-
-        if( url.indexOf("/piwik.php") == -1	&& url.indexOf("/proxy-piwik.php") == -1) {
-            url += "/piwik.php";
-        }
-        
         def plugins
         def localHour
         def localMinute
@@ -104,6 +131,18 @@ class PiwikTracker {
         def width
         def height
         def customData
+
+        if(logger.isDebugEnabled()) {
+            logger.debug("Posting info throug ${url}")
+        }
+
+        if(!url) {
+            throw new Exception("You must first set the Piwik Tracker URL");
+        }
+
+        if( url.indexOf("/piwik.php") == -1	&& url.indexOf("/proxy-piwik.php") == -1) {
+            url += "/piwik.php";
+        }
 
         url +
                 "?idsite=" + idSite +
@@ -181,6 +220,9 @@ class PiwikTracker {
                 }
             }
 
+            if(logger.isDebugEnabled()) {
+                logger.debug("Posted ${urlString} with response code ${connection.getResponseCode()}")
+            }
 
             if(connection.getResponseCode() != 200) {
                 logger.error(connection.getResponseCode() + " " + connection.getResponseMessage());

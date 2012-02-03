@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 defaultTasks 'build'
-version='0.1'
+version='0.1.5'
 
 repositories {
     mavenLocal()

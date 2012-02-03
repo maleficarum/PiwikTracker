@@ -3,6 +3,7 @@ package com.angellore.piwik
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import org.slf4j.LoggerFactory
+import org.json.JSONArray
 
 /**
  * Post data to piwik server
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory
  */
 class PiwikTracker {
 
+    def VERSION = 1
     def request
     def site
     def referer
@@ -24,6 +26,8 @@ class PiwikTracker {
     def hasCookies = false
     def requestCookie
     def visitorCustomVar = []
+    def forcedDatetime
+    def tokenAuth
 
     def logger = LoggerFactory.getLogger(getClass())
 
@@ -72,17 +76,68 @@ class PiwikTracker {
     }
 
     /**
-     * @see doTrackPageView()
      * @param string $documentTitle Page view name as it will appear in Piwik reports
      * @return string URL to piwik.php with all parameters set to track the pageview
      * @throws Exception
      */
     def getUrlTrackPageView(documentTitle) throws Exception {
-        url = getRequest( site );
+        url = getStringRequest( site );
         if(!documentTitle) {
             url += "&action_name=" + urlencode(documentTitle);
         }
         url;
+    }
+
+    protected String getStringRequest( int idSite ) throws Exception {
+        if(url) {
+            throw new Exception("You must first set the Piwik Tracker URL");
+        }
+
+        if( url.indexOf("/piwik.php") == -1	&& url.indexOf("/proxy-piwik.php") == -1) {
+            url += "/piwik.php";
+        }
+        
+        def plugins
+        def localHour
+        def localMinute
+        def localSecond
+        def width
+        def height
+        def customData
+
+        url +
+                "?idsite=" + idSite +
+                "&rec=1" +
+                "&apiv=" + VERSION +
+                "&url=" + urlencode(pageUrl) +
+                "&urlref=" + urlencode(referer) +
+                "&rand=" + getRandom() +
+                "&_id=" + visitorId +
+                "&_ref=" + urlencode(referer) +
+                "&_refts=" + ( !forcedDatetime ? forcedDatetime : new Date()) +
+                (!ip ? "&cip=" + ip : "") +
+                (!forcedDatetime ? "&cdt=" + urlencode(forcedDatetime) : "") +
+                (!tokenAuth ? "&token_auth=" + urlencode(tokenAuth) : "") +
+                (!plugins ? plugins : "" ) +
+                ((localHour && localMinute && localSecond) ? "&h=" + localHour + "&m=" + localMinute  + "&s=" + localSecond : "" )+
+                ((!width && !height) ? "&res=" + width + "x" + height : "") +
+                (hasCookies ? "&cookie=" + hasCookies : "") +
+                (!customData ? "&data=" + customData : "") +
+                (!visitorCustomVar ? "&_cvar=" + urlencode(jsonEncode(visitorCustomVar)) : "")
+    }
+
+
+    def jsonEncode(visitorCustomVar) {
+        def json = new JSONArray()
+
+        visitorCustomVar.each { it
+            json.put(it)
+        }
+        json.toString()
+    }
+
+    def getRandom() {
+        new Double(new Random().nextDouble()).toString();
     }
 
     def urlencode(string) {

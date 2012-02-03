@@ -1,0 +1,12 @@
+===========================================
+PiwikTracker: Simple Groovy/Scala Piwik Tracker
+===========================================
+
+PiwikTracker for groovy allows you to post visited page information to your piwik tracking system. It's very useful when you use REST (by example)
+and you don't have a view to show in the client's browser
+
+This is a initial port from java to groovy based on http://dev.piwik.org/trac/ticket/2172.
+
+I don't know the author of that code, so, please, for further information about java code, visit to below URL.
+
+http://dev.piwik.org/trac/ticket/2172

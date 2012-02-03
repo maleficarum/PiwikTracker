@@ -58,13 +58,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PiwikTracker.groovy" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PiwikTracker.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/groovy/com/angellore/piwik/PiwikTracker.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="131" column="8" selection-start="4111" selection-end="4111" vertical-scroll-proportion="1.4231975">
+            <state line="131" column="0" selection-start="4111" selection-end="4111" vertical-scroll-proportion="-8.153846">
               <folding>
                 <element signature="e#29#63#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="37" selection-start="584" selection-end="584" vertical-scroll-proportion="0.24849397">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -105,6 +114,7 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/groovy/com/angellore/piwik/ResponseData.groovy" />
         <option value="$PROJECT_DIR$/src/main/groovy/com/angellore/piwik/PiwikTracker.groovy" />
+        <option value="$PROJECT_DIR$/README" />
       </list>
     </option>
   </component>
@@ -525,10 +535,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/groovy/com/angellore/piwik/PiwikTracker.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="8" selection-start="4111" selection-end="4111" vertical-scroll-proportion="1.4231975">
+        <state line="131" column="0" selection-start="4111" selection-end="4111" vertical-scroll-proportion="-8.153846">
           <folding>
             <element signature="e#29#63#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="37" selection-start="584" selection-end="584" vertical-scroll-proportion="0.24849397">
+          <folding />
         </state>
       </provider>
     </entry>

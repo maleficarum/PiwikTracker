@@ -1,4 +1,4 @@
-package mx.com.maleficarum.piwik
+package mx.com.maleficarum.piwik.groovy
 
 import javax.servlet.http.Cookie
 

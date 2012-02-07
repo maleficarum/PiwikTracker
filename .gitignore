@@ -2,3 +2,4 @@ src/main/java
 .gradle
 build
 out
+src/main/scala

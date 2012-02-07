@@ -1,4 +1,4 @@
-package com.angellore.piwik
+package mx.com.maleficarum.piwik
 
 import javax.servlet.http.Cookie
 

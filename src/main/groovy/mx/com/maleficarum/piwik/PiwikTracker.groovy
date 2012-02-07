@@ -1,4 +1,4 @@
-package com.angellore.piwik
+package mx.com.maleficarum.piwik
 
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
